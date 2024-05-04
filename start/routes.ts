@@ -15,6 +15,7 @@ import UsersController from '#controllers/users_controller'
 router.get('/', async () => {
   return {
     hello: 'world',
+    test: true,
   }
 })
 

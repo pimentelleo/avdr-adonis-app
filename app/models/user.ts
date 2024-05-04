@@ -4,17 +4,18 @@ import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 
-const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
-  uids: ['email'],
+const AuthFinder = withAuthFinder(() => hash.use('argon'), {
+  uids: ['username'],
   passwordColumnName: 'password',
 })
 
 export default class User extends compose(BaseModel, AuthFinder) {
+  static connection = 'authme'
   @column({ isPrimary: true })
-  declare id: number
+  declare username: string
 
   @column()
-  declare fullName: string | null
+  declare realname: string
 
   @column()
   declare email: string
@@ -22,9 +23,4 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare password: string
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
 }
